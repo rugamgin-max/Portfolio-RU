@@ -83,7 +83,7 @@
         .work-title{font-size:1.4rem;font-weight:800;margin-bottom:8px}
         .work-description{font-size:.95rem;color:rgba(255,255,255,.8);line-height:1.6}
 
-        /* Featured, testimonials, etc - simplified sizing for clarity */
+        /* Featured work */
         .featured-work{display:grid;gap:80px;margin-top:100px}
         .featured-item{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;opacity:0;transform:translateY(50px);transition:all .6s ease}
         .featured-item.visible{opacity:1;transform:translateY(0)}
@@ -272,12 +272,12 @@
                 </div>
             </div>
 
-            <!-- 10K Dollar Challenge -->
+            <!-- 10K$ Challenge (work grid item) -->
             <div class="work-item">
-                <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K Dollar Challenge" width="1600" height="1000">
+                <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge" width="1600" height="1000">
                 <div class="work-overlay">
                     <div class="work-category">Finance/Challenge</div>
-                    <h3 class="work-title">10K Dollar Challenge</h3>
+                    <h3 class="work-title">10K$ Challenge</h3>
                     <p class="work-description">Live challenge thumbnail with Bitcoin, gold bars, and progress tracking.</p>
                 </div>
             </div>
@@ -309,12 +309,13 @@
                 </div>
             </div>
 
+            <!-- 10K$ featured item: made identical in size/effect to the other featured items -->
             <div class="featured-item">
                 <div class="featured-image">
-                    <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K Dollar Challenge - featured">
+                    <img loading="lazy" id="featured-10k-img" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge - featured">
                 </div>
                 <div class="featured-content">
-                    <h3>10K Dollar Challenge</h3>
+                    <h3>10K$ Challenge</h3>
                     <p>High-stakes finance thumbnail featuring cryptocurrency and gold elements with a progress tracker. Clean professional design communicating urgency and value.</p>
                     <div class="tags">
                         <span class="tag">Finance</span>
