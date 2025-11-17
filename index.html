@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Trilok Barman - Creative Designer</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+            background:#000;color:#fff;overflow-x:hidden;cursor:none;
+        }
+
+        /* Custom Cursor */
+        .cursor{width:20px;height:20px;border:2px solid #00ff88;border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transition:all .1s ease;transform:translate(-50%,-50%);mix-blend-mode:difference}
+        .cursor-follower{width:50px;height:50px;border:1px solid rgba(0,255,136,.3);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:all .3s ease;transform:translate(-50%,-50%)}
+        .cursor.active{width:60px;height:60px;background:rgba(0,255,136,.2)}
+
+        /* Background */
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:.03;background-image:
+            linear-gradient(rgba(0,255,136,.5) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,255,136,.5) 1px, transparent 1px);
+            background-size:50px 50px;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+
+        .gradient-orb{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(100px);opacity:.3;pointer-events:none;z-index:-1}
+        .orb-1{background:radial-gradient(circle,#00ff88 0%,transparent 70%);top:-300px;left:-200px;animation:float1 15s ease-in-out infinite}
+        .orb-2{background:radial-gradient(circle,#00aaff 0%,transparent 70%);bottom:-200px;right:-300px;animation:float2 18s ease-in-out infinite}
+        .orb-3{background:radial-gradient(circle,#ff0088 0%,transparent 70%);top:50%;left:50%;animation:float3 20s ease-in-out infinite}
+        @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(100px,150px)}}
+        @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-150px,-100px)}}
+        @keyframes float3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-30%,-70%)}}
+
+        /* Nav */
+        nav{position:fixed;top:0;width:100%;padding:30px 6%;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:all .4s cubic-bezier(.4,0,.2,1)}
+        nav.scrolled{padding:20px 6%;background:rgba(0,0,0,.8);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(0,255,136,.1)}
+        .logo{font-size:28px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .nav-links{display:flex;gap:50px;list-style:none}
+        .nav-links a{color:rgba(255,255,255,.6);text-decoration:none;transition:all .3s ease;position:relative;font-weight:500;font-size:14px;text-transform:uppercase;letter-spacing:2px}
+        .nav-links a:hover{color:#00ff88}
+        .nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:linear-gradient(90deg,#00ff88,#00aaff);transition:width .4s ease}
+        .nav-links a:hover::after{width:100%}
+
+        /* Hero */
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+        .hero-content{text-align:center;z-index:2;max-width:1200px;padding:0 20px}
+        .hero-badge{display:inline-block;padding:10px 25px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:50px;font-size:12px;color:#00ff88;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:40px;opacity:0;animation:fadeInUp 1s ease forwards .2s}
+        .hero h1{font-size:clamp(3rem,10vw,8rem);font-weight:900;line-height:1;margin-bottom:30px;letter-spacing:-3px;opacity:0;animation:fadeInUp 1s ease forwards .4s}
+        .gradient-text{background:linear-gradient(135deg,#fff 0%,#00ff88 50%,#00aaff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+        .hero-subtitle{font-size:clamp(1rem,2vw,1.4rem);color:rgba(255,255,255,.5);max-width:700px;margin:0 auto 50px;line-height:1.8;opacity:0;animation:fadeInUp 1s ease forwards .6s}
+        .cta-group{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeInUp 1s ease forwards .8s}
+        .btn{padding:18px 45px;border-radius:50px;font-weight:700;font-size:14px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);border:none;text-transform:uppercase;letter-spacing:1px;position:relative;overflow:hidden}
+        .btn-primary{background:linear-gradient(135deg,#00ff88,#00aaff);color:#000;box-shadow:0 0 40px rgba(0,255,136,.3)}
+        .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#00aaff,#00ff88);opacity:0;transition:opacity .4s ease}
+        .btn-primary:hover::before{opacity:1}
+        .btn-primary span{position:relative;z-index:1}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 50px rgba(0,255,136,.5)}
+        .btn-secondary{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.2)}
+        .btn-secondary:hover{background:rgba(255,255,255,.05);border-color:#00ff88;transform:translateY(-3px)}
+        .scroll-indicator{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);opacity:0;animation:fadeInUp 1s ease forwards 1s,bounce 2s ease infinite 2s}
+        .scroll-indicator span{display:block;width:2px;height:40px;background:linear-gradient(to bottom,#00ff88,transparent);margin:0 auto 10px}
+        @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+        /* Sections */
+        .section{padding:150px 6%;position:relative}
+        .section-header{text-align:center;margin-bottom:100px}
+        .section-label{display:inline-block;padding:8px 20px;background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);border-radius:50px;font-size:11px;color:#00ff88;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:30px}
+        .section-title{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;margin-bottom:25px;letter-spacing:-2px}
+        .section-subtitle{font-size:1.2rem;color:rgba(255,255,255,.5);max-width:600px;margin:0 auto;line-height:1.8}
+
+        /* Work grid */
+        .work-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px}
+        .work-item{position:relative;aspect-ratio:16/10;border-radius:20px;overflow:hidden;cursor:pointer;opacity:0;transform:translateY(50px);transition:all .6s cubic-bezier(.4,0,.2,1)}
+        .work-item.visible{opacity:1;transform:translateY(0)}
+        .work-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.2),rgba(0,170,255,.2));opacity:0;transition:opacity .4s ease;z-index:2}
+        .work-item:hover::before{opacity:1}
+        .work-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+        .work-item:hover img{transform:scale(1.08)}
+        .work-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,transparent 70%);display:flex;flex-direction:column;justify-content:flex-end;padding:28px;z-index:3;opacity:0;transition:opacity .4s ease}
+        .work-item:hover .work-overlay{opacity:1}
+        .work-category{font-size:11px;color:#00ff88;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+        .work-title{font-size:1.4rem;font-weight:800;margin-bottom:8px}
+        .work-description{font-size:.95rem;color:rgba(255,255,255,.8);line-height:1.6}
+
+        /* Highlighted item (centered on wide screens) */
+        .work-item.highlight { /* start as normal — reveal handled by .visible */
+            /* no visual difference until visible; layout changes below */
+        }
+        @media(min-width:1100px){
+            /* make highlighted item span and center on wide screens */
+            .work-grid { align-items:start; }
+            .work-item.highlight {
+                grid-column: 2 / span 1; /* try to center in 3+ column layouts */
+                max-width: 920px;
+                justify-self: center;
+            }
+        }
+        @media(min-width:1400px){
+            /* for very wide screens, span two columns to make it more prominent */
+            .work-item.highlight {
+                grid-column: 2 / span 2;
+            }
+        }
+
+        /* Featured, testimonials, etc - simplified sizing for clarity */
+        .featured-work{display:grid;gap:80px;margin-top:100px}
+        .featured-item{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;opacity:0;transform:translateY(50px);transition:all .6s ease}
+        .featured-item.visible{opacity:1;transform:translateY(0)}
+        .featured-item:nth-child(even){grid-template-columns:1fr 1.2fr}
+        .featured-image{border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+        .featured-image img{width:100%;height:auto;display:block;transition:transform .6s ease}
+        .featured-item:hover .featured-image img{transform:scale(1.03)}
+        .featured-content h3{font-size:2rem;font-weight:900;margin-bottom:20px}
+        .tags{display:flex;gap:12px;flex-wrap:wrap}
+        .tag{padding:8px 18px;background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);border-radius:50px;font-size:11px;color:#00ff88;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+
+        .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+        .testimonial{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:30px;backdrop-filter:blur(10px);opacity:0;transform:translateY(50px);transition:all .6s ease}
+        .testimonial.visible{opacity:1;transform:translateY(0)}
+        .testimonial-header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+        .testimonial-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00aaff);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#000}
+        .testimonial-name{font-weight:700;font-size:1.05rem}
+        .testimonial-role{font-size:.9rem;color:rgba(255,255,255,.5)}
+        .testimonial-text{font-size:1rem;color:rgba(255,255,255,.8);line-height:1.6}
+
+        .cta-section{text-align:center;padding:100px 6%;position:relative}
+        .cta-content h2{font-size:clamp(2rem,6vw,4rem);font-weight:900;margin-bottom:20px}
+        .cta-content p{font-size:1.05rem;color:rgba(255,255,255,.6);max-width:700px;margin:0 auto 30px;line-height:1.8}
+
+        footer{padding:40px 6% 24px;border-top:1px solid rgba(255,255,255,.05)}
+        .footer-content{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:30px}
+        .footer-logo{font-size:28px;font-weight:900;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .footer-links h4{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;color:#00ff88}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:14px}
+        .footer-bottom{text-align:center;color:rgba(255,255,255,.4);font-size:14px;padding-top:20px;border-top:1px solid rgba(255,255,255,.03)}
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+        /* Responsive */
+        @media(max-width:1024px){
+            .cursor,.cursor-follower{display:none}
+            body{cursor:auto}
+            .work-grid{grid-template-columns:1fr}
+            .featured-item{grid-template-columns:1fr;gap:24px}
+            .footer-content{grid-template-columns:1fr 1fr}
+            .work-item.highlight { grid-column: auto; max-width: 100%; justify-self: auto; }
+        }
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .section{padding:80px 5%}
+            .cta-group{flex-direction:column;align-items:stretch}
+            .testimonials-grid{grid-template-columns:1fr}
+            .footer-content{grid-template-columns:1fr;gap:24px}
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
+
+    <!-- Animated Background -->
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="gradient-orb orb-1" aria-hidden="true"></div>
+    <div class="gradient-orb orb-2" aria-hidden="true"></div>
+    <div class="gradient-orb orb-3" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">TRILOK.</div>
+        <ul class="nav-links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" role="banner">
+        <div class="hero-content">
+            <div class="hero-badge">AVAILABLE FOR FREELANCE</div>
+            <h1>CREATIVE<br><span class="gradient-text">DESIGNER</span></h1>
+            <p class="hero-subtitle">Transforming ideas into stunning visuals. Specializing in high-converting YouTube thumbnails, dynamic social media graphics, and memorable brand identities that captivate audiences.</p>
+            <div class="cta-group">
+                <button class="btn btn-primary" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'})"><span>View My Work</span></button>
+                <button class="btn btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get In Touch</button>
+            </div>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <span></span>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:2px">Scroll</p>
+        </div>
+    </section>
+
+    <!-- Work Grid -->
+    <section class="section" id="work" aria-labelledby="work-title">
+        <div class="section-header">
+            <div class="section-label">Portfolio</div>
+            <h2 id="work-title" class="section-title">Selected Work</h2>
+            <p class="section-subtitle">A collection of my latest projects showcasing creativity, precision, and results-driven design.</p>
+        </div>
+
+        <div class="work-grid">
+            <!-- Roblox Lucky Blocks -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/Yq304fk/roblox2.jpg" alt="Roblox - Banned Lucky Blocks" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Gaming</div>
+                    <h3 class="work-title">Banned Lucky Blocks</h3>
+                    <p class="work-description">High-contrast split design showing owner vs banned blocks with Roblox character.</p>
+                </div>
+            </div>
+
+            <!-- Hollow Knight -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/Xf0D1jGM/Hollow-Knight.jpg" alt="Hollow Knight - Dirtmouth" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Gaming</div>
+                    <h3 class="work-title">Hollow Knight Dirtmouth</h3>
+                    <p class="work-description">Atmospheric indie game thumbnail with mystical blue tones.</p>
+                </div>
+            </div>
+
+            <!-- Tibia PK Battle -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/wh3ntZRP/tibia-thumbnail-10.jpg" alt="Tibia - PK Battle" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Gaming</div>
+                    <h3 class="work-title">Tibia PK Battle</h3>
+                    <p class="work-description">Intense PvP action with dramatic fire effects and combat visuals.</p>
+                </div>
+            </div>
+
+            <!-- Battlefield -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/pjsWKjsb/Battlefield-6-thumbnail-sample-2.jpg" alt="Battlefield - WTF Moment" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">FPS Gaming</div>
+                    <h3 class="work-title">Battlefield WTF Moment</h3>
+                    <p class="work-description">Explosive gaming moment with attention-grabbing visuals and typography.</p>
+                </div>
+            </div>
+
+            <!-- Documentary -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/vWSxPdf/Who-Really-Controls-the-World-2-2.jpg" alt="Documentary - Who Controls The World" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Documentary</div>
+                    <h3 class="work-title">Who Controls The World</h3>
+                    <p class="work-description">Thought-provoking documentary thumbnail with global conspiracy themes.</p>
+                </div>
+            </div>
+
+            <!-- Only Love Wins -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/7x6zx0ZC/thanos-thum.jpg" alt="Only Love Wins - Cinematic" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Cinematic</div>
+                    <h3 class="work-title">Only Love Wins</h3>
+                    <p class="work-description">Romantic cinematic thumbnail with dramatic character focus and golden lighting.</p>
+                </div>
+            </div>
+
+            <!-- Minecraft End War -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/jPXmjPq6/Minecraft-2-12.jpg" alt="Minecraft End War - Epic Battle" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Minecraft</div>
+                    <h3 class="work-title">Minecraft End War</h3>
+                    <p class="work-description">Epic Minecraft battle thumbnail with vibrant purple and pink aesthetics.</p>
+                </div>
+            </div>
+
+            <!-- Highlighted centered item: 10K$ Challenge -->
+            <div class="work-item highlight">
+                <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Finance / Challenge</div>
+                    <h3 class="work-title">10K$ Challenge</h3>
+                    <p class="work-description">High-stakes challenge thumbnail featuring cryptocurrency and gold elements with a progress tracker.</p>
+                </div>
+            </div>
+
+            <!-- Runn Challenge (uses your M6 image) -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/fV7w7jFp/M6-15-1.jpg" alt="Runn Challenge - Minecraft" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Minecraft</div>
+                    <h3 class="work-title">Runn Challenge</h3>
+                    <p class="work-description">Dynamic cyan-themed Minecraft action with intense movement effects.</p>
+                </div>
+            </div>
+
+            <!-- Survival SMP -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/MDJZqTqS/1-3.jpg" alt="Survival SMP - Season" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Minecraft SMP</div>
+                    <h3 class="work-title">Survival SMP Season</h3>
+                    <p class="work-description">Server series thumbnail featuring team dynamics and competitive gameplay.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work -->
+    <section class="section" aria-labelledby="featured-title">
+        <div class="section-header">
+            <div class="section-label">Case Studies</div>
+            <h2 id="featured-title" class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">Deep dive into select projects that showcase my design process and impact.</p>
+        </div>
+
+        <div class="featured-work">
+            <div class="featured-item">
+                <div class="featured-image">
+                    <img loading="lazy" src="https://i.ibb.co/7x6zx0ZC/thanos-thum.jpg" alt="Only Love Wins - featured">
+                </div>
+                <div class="featured-content">
+                    <h3>Only Love Wins</h3>
+                    <p>A cinematic thumbnail combining romance and action aesthetics that increased the client's CTR by 52% (client report).</p>
+                    <p>Strategic use of warm color grading and bold typography creates instant intrigue while keeping visual clarity for small thumbnail sizes.</p>
+                    <div class="tags">
+                        <span class="tag">Cinematic</span>
+                        <span class="tag">Gaming</span>
+                        <span class="tag">High-CTR</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item">
+                <div class="featured-image">
+                    <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge - featured">
+                </div>
+                <div class="featured-content">
+                    <h3>10K$ Challenge</h3>
+                    <p>High-stakes finance thumbnail featuring cryptocurrency and gold elements with a progress tracker. Clean professional design communicating urgency and value.</p>
+                    <div class="tags">
+                        <span class="tag">Finance</span>
+                        <span class="tag">Live Stream</span>
+                        <span class="tag">Challenge</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item">
+                <div class="featured-image">
+                    <img loading="lazy" src="https://i.ibb.co/vWSxPdf/Who-Really-Controls-the-World-2-2.jpg" alt="Who Controls The World - featured">
+                </div>
+                <div class="featured-content">
+                    <h3>Who Controls The World?</h3>
+                    <p>Documentary-style thumbnail with bold questioning typography and split-screen contrast to frame complex themes visually.</p>
+                    <div class="tags">
+                        <span class="tag">Documentary</span>
+                        <span class="tag">Educational</span>
+                        <span class="tag">Conspiracy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" id="testimonials" aria-labelledby="testimonials-title">
+        <div class="section-header">
+            <div class="section-label">Testimonials</div>
+            <h2 id="testimonials-title" class="section-title">What Clients Say</h2>
+            <p class="section-subtitle">Building long-term relationships through consistent quality and professionalism.</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">RK</div>
+                    <div>
+                        <div class="testimonial-name">RK JB</div>
+                        <div class="testimonial-role">Gaming Content Creator</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">Outstanding work quality and always delivers on time. The professionalism is unmatched—he's always ready to collaborate and bring creative ideas to the table. My channel's engagement has significantly improved since working together.</p>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">RP</div>
+                    <div>
+                        <div class="testimonial-name">Rameshwar Patipagos</div>
+                        <div class="testimonial-role">YouTuber</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">Exceptional design work at the highest level! The attention to detail and creative vision exceeded all my expectations.</p>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">PS</div>
+                    <div>
+                        <div class="testimonial-name">Pariyesha Sukavanane</div>
+                        <div class="testimonial-role">Content Creator</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">Absolutely loved the graphics design! Creative, professional, and always delivers quality work that stands out.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about" aria-labelledby="about-title">
+        <div class="section-header">
+            <div class="section-label">About Me</div>
+            <h2 id="about-title" class="section-title">The Creative Behind<br>The Designs</h2>
+            <p class="section-subtitle">I'm Trilok Barman, a graphic designer with experience crafting visuals that convert. Specializing in thumbnails, social graphics, and brand identity.</p>
+        </div>
+
+        <div style="max-width:900px;margin:60px auto 0;text-align:center">
+            <p style="font-size:1.05rem;color:rgba(255,255,255,.7);line-height:2;margin-bottom:20px">My approach combines data-driven design principles with creative innovation to stop the scroll and drive engagement.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;margin-top:40px">
+                <div>
+                    <div style="font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">50+</div>
+                    <div style="color:rgba(255,255,255,.6);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.9rem">Projects Completed</div>
+                </div>
+                <div>
+                    <div style="font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">100%</div>
+                    <div style="color:rgba(255,255,255,.6);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.9rem">Client Satisfaction</div>
+                </div>
+                <div>
+                    <div style="font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">1+</div>
+                    <div style="color:rgba(255,255,255,.6);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.9rem">Years Experience</div>
+                </div>
+                <div>
+                    <div style="font-size:2.8rem;font-weight:900;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">24/7</div>
+                    <div style="color:rgba(255,255,255,.6);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.9rem">Availability</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Contact -->
+    <section class="cta-section" id="contact" aria-labelledby="contact-title">
+        <div class="cta-content">
+            <h2 id="contact-title">Let's Create<br><span class="gradient-text">Something Amazing</span></h2>
+            <p>Ready to elevate your content with designs that convert? Whether thumbnails, social graphics, or brand identity—let's bring your vision to life.</p>
+            <button class="btn btn-primary" onclick="window.location.href='mailto:trilokbarman@example.com'"><span>Start a Project</span></button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">TRILOK.</div>
+                <p style="color:rgba(255,255,255,.6)">Creative designer specializing in high-converting thumbnails and visual content that drives results.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">YouTube Thumbnails</a></li>
+                    <li><a href="#">Social Media Graphics</a></li>
+                    <li><a href="#">Brand Identity</a></li>
+                    <li><a href="#">Graphic Design</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+    <h4>Connect</h4>
+    <ul>
+        <li><a href="https://www.instagram.com/rudesigner2025/?hl=en" target="_blank">Instagram</a></li>
+        <li><a href="https://x.com/GamginRu" target="_blank">Twitter</a></li>
+        <li><a href="https://discord.gg/95FjVegT" target="_blank">Discord</a></li>
+        <li><a href="mailto:trilokbarman@example.com">Email</a></li>
+    </ul>
+</div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Trilok Barman. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cursor
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+        });
+
+        function animateCursor(){
+            // smoother but responsive movement
+            cursorX += (mouseX - cursorX) * 0.35;
+            cursorY += (mouseY - cursorY) * 0.35;
+            followerX += (mouseX - followerX) * 0.12;
+            followerY += (mouseY - followerY) * 0.12;
+
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            follower.style.left = followerX + 'px';
+            follower.style.top = followerY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+
+        if (window.innerWidth > 1024) animateCursor();
+
+        // hover effects for interactive elements
+        document.querySelectorAll('a, button, .work-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+
+        // Navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        // Intersection observer for reveal animations
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, idx) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), idx * 80);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.work-item, .featured-item, .testimonial').forEach(el => observer.observe(el));
+
+        // Smooth anchor scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e){
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({behavior: 'smooth', block: 'start'});
+            });
+        });
+
+        // Parallax for orbs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.gradient-orb').forEach((el, index) => {
+                const speed = 0.4 + (index * 0.08);
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Accessibility: enable keyboard focus outline on keyboard navigation
+        function handleFirstTab(e) {
+            if (e.key === 'Tab') document.body.classList.add('show-focus-outline');
+        }
+        window.addEventListener('keydown', handleFirstTab);
+    </script>
+</body>
+</html>
