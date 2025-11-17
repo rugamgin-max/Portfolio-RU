@@ -83,26 +83,6 @@
         .work-title{font-size:1.4rem;font-weight:800;margin-bottom:8px}
         .work-description{font-size:.95rem;color:rgba(255,255,255,.8);line-height:1.6}
 
-        /* Highlighted item (centered on wide screens) */
-        .work-item.highlight { /* start as normal — reveal handled by .visible */
-            /* no visual difference until visible; layout changes below */
-        }
-        @media(min-width:1100px){
-            /* make highlighted item span and center on wide screens */
-            .work-grid { align-items:start; }
-            .work-item.highlight {
-                grid-column: 2 / span 1; /* try to center in 3+ column layouts */
-                max-width: 920px;
-                justify-self: center;
-            }
-        }
-        @media(min-width:1400px){
-            /* for very wide screens, span two columns to make it more prominent */
-            .work-item.highlight {
-                grid-column: 2 / span 2;
-            }
-        }
-
         /* Featured, testimonials, etc - simplified sizing for clarity */
         .featured-work{display:grid;gap:80px;margin-top:100px}
         .featured-item{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;opacity:0;transform:translateY(50px);transition:all .6s ease}
@@ -144,7 +124,6 @@
             .work-grid{grid-template-columns:1fr}
             .featured-item{grid-template-columns:1fr;gap:24px}
             .footer-content{grid-template-columns:1fr 1fr}
-            .work-item.highlight { grid-column: auto; max-width: 100%; justify-self: auto; }
         }
         @media(max-width:768px){
             .nav-links{display:none}
@@ -273,16 +252,6 @@
                 </div>
             </div>
 
-            <!-- Highlighted centered item: 10K$ Challenge -->
-            <div class="work-item highlight">
-                <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge" width="1600" height="1000">
-                <div class="work-overlay">
-                    <div class="work-category">Finance / Challenge</div>
-                    <h3 class="work-title">10K$ Challenge</h3>
-                    <p class="work-description">High-stakes challenge thumbnail featuring cryptocurrency and gold elements with a progress tracker.</p>
-                </div>
-            </div>
-
             <!-- Runn Challenge (uses your M6 image) -->
             <div class="work-item">
                 <img loading="lazy" src="https://i.ibb.co/fV7w7jFp/M6-15-1.jpg" alt="Runn Challenge - Minecraft" width="1600" height="1000">
@@ -300,6 +269,16 @@
                     <div class="work-category">Minecraft SMP</div>
                     <h3 class="work-title">Survival SMP Season</h3>
                     <p class="work-description">Server series thumbnail featuring team dynamics and competitive gameplay.</p>
+                </div>
+            </div>
+
+            <!-- 10K Dollar Challenge -->
+            <div class="work-item">
+                <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K Dollar Challenge" width="1600" height="1000">
+                <div class="work-overlay">
+                    <div class="work-category">Finance/Challenge</div>
+                    <h3 class="work-title">10K Dollar Challenge</h3>
+                    <p class="work-description">Live challenge thumbnail with Bitcoin, gold bars, and progress tracking.</p>
                 </div>
             </div>
         </div>
@@ -332,10 +311,10 @@
 
             <div class="featured-item">
                 <div class="featured-image">
-                    <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge - featured">
+                    <img loading="lazy" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K Dollar Challenge - featured">
                 </div>
                 <div class="featured-content">
-                    <h3>10K$ Challenge</h3>
+                    <h3>10K Dollar Challenge</h3>
                     <p>High-stakes finance thumbnail featuring cryptocurrency and gold elements with a progress tracker. Clean professional design communicating urgency and value.</p>
                     <div class="tags">
                         <span class="tag">Finance</span>
