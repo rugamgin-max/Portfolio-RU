@@ -85,7 +85,6 @@
 
         /* --- FEATURED: force consistent rendered size (desktop ~630x360) --- */
         .featured-work{display:grid;gap:48px;margin-top:100px}
-        /* Desktop: fixed image column + fluid content column */
         .featured-item{
             display:grid;
             grid-template-columns:630px 1fr; /* image column fixed width (controls rendered width) */
@@ -94,7 +93,10 @@
             border-radius:16px;
             transition:transform .35s ease, box-shadow .35s ease;
             overflow:visible;
+            opacity:0;
+            transform:translateY(20px);
         }
+        .featured-item.visible{opacity:1;transform:none;}
         /* alternate layout for even items (image on right) */
         .featured-item:nth-child(even){
             grid-template-columns:1fr 630px;
@@ -111,12 +113,14 @@
             border:2px solid rgba(255,255,255,0.03);
             transition:box-shadow .35s ease, border-color .35s ease, transform .35s ease;
             display:block;
+            background:#111;
         }
 
+        /* Image fills the container and keeps exact crop framing */
         .featured-image img{
             width:100%;
             height:100%;
-            object-fit:cover;   /* ensures center crop and consistent framing */
+            object-fit:cover;
             display:block;
             transition:transform .6s ease;
         }
@@ -139,20 +143,38 @@
             transform:scale(1.04);
         }
 
-        /* Responsive: smaller fixed size at medium breakpoints */
+        /* Responsive: medium breakpoints */
         @media (max-width:1200px){
             .featured-item{grid-template-columns:520px 1fr}
             .featured-item:nth-child(even){grid-template-columns:1fr 520px}
             .featured-image{width:520px;height:300px}
         }
 
-        /* Stack vertically on smaller screens */
+        /* Stack vertically on smaller screens and ensure full-width images */
         @media(max-width:980px){
-            .featured-item{grid-template-columns:1fr;gap:20px}
-            .featured-image{width:100%;max-width:none;height:260px}
+            .featured-item{grid-template-columns:1fr;gap:20px;opacity:1;transform:none} /* force visible on small screens */
+            .featured-image{
+                width:100% !important;
+                max-width:none;
+                height:auto !important;
+            }
+            .featured-image img{
+                width:100% !important;
+                height:auto !important;
+                object-fit:cover;
+                display:block;
+            }
+            /* keep image above content on small screens */
+            .featured-item{ display:flex; flex-direction:column; }
+            .featured-item .featured-image{ order: -1; } /* image first */
+            .featured-item .featured-content{ order: 0; }
+
+            /* make reveal animation less aggressive on small screens (faster) */
+            .featured-item{transition:none}
+            .featured-item.visible{opacity:1;transform:none}
         }
         @media(max-width:420px){
-            .featured-image{height:200px}
+            .featured-image{height:auto}
         }
 
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -182,7 +204,6 @@
             .cursor,.cursor-follower{display:none}
             body{cursor:auto}
             .work-grid{grid-template-columns:1fr}
-            .featured-item{grid-template-columns:1fr;gap:24px}
             .footer-content{grid-template-columns:1fr 1fr}
         }
         @media(max-width:768px){
@@ -355,7 +376,8 @@
         <div class="featured-work">
             <div class="featured-item">
                 <div class="featured-image">
-                    <img loading="lazy" src="https://i.ibb.co/7x6zx0ZC/thanos-thum.jpg" alt="Only Love Wins - featured">
+                    <!-- set eager loading and width/height attributes so browser computes layout early -->
+                    <img loading="eager" src="https://i.ibb.co/7x6zx0ZC/thanos-thum.jpg" alt="Only Love Wins - featured" width="630" height="360">
                 </div>
                 <div class="featured-content">
                     <h3>Only Love Wins</h3>
@@ -372,8 +394,8 @@
             <!-- 10K$ featured item: identical size/effect to other featured items -->
             <div class="featured-item">
                 <div class="featured-image">
-                    <!-- use your hosted image or the provided live-1 URL -->
-                    <img loading="lazy" id="featured-10k-img" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge - featured">
+                    <!-- changed to eager and added explicit width/height -->
+                    <img loading="eager" id="featured-10k-img" src="https://i.ibb.co/FL1Kvbh0/live-1-5.jpg" alt="10K$ Challenge - featured" width="630" height="360">
                 </div>
                 <div class="featured-content">
                     <h3>10K$ Challenge</h3>
@@ -388,7 +410,7 @@
 
             <div class="featured-item">
                 <div class="featured-image">
-                    <img loading="lazy" src="https://i.ibb.co/vWSxPdf/Who-Really-Controls-the-World-2-2.jpg" alt="Who Controls The World - featured">
+                    <img loading="eager" src="https://i.ibb.co/vWSxPdf/Who-Really-Controls-the-World-2-2.jpg" alt="Who Controls The World - featured" width="630" height="360">
                 </div>
                 <div class="featured-content">
                     <h3>Who Controls The World?</h3>
@@ -516,15 +538,14 @@
             </div>
 
             <div class="footer-links">
-    <h4>Connect</h4>
-    <ul>
-        <li><a href="https://www.instagram.com/rudesigner2025/?hl=en" target="_blank">Instagram</a></li>
-        <li><a href="https://x.com/GamginRu" target="_blank">Twitter</a></li>
-        <li><a href="https://discord.gg/95FjVegT" target="_blank">Discord</a></li>
-        <li><a href="mailto:trilokbarman@example.com">Email</a></li>
-    </ul>
-</div>
-
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/rudesigner2025/?hl=en" target="_blank">Instagram</a></li>
+                    <li><a href="https://x.com/GamginRu" target="_blank">Twitter</a></li>
+                    <li><a href="https://discord.gg/95FjVegT" target="_blank">Discord</a></li>
+                    <li><a href="mailto:trilokbarman@example.com">Email</a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="footer-bottom">
@@ -545,16 +566,13 @@
         });
 
         function animateCursor(){
-            // smoother but responsive movement
             cursorX += (mouseX - cursorX) * 0.35;
             cursorY += (mouseY - cursorY) * 0.35;
             followerX += (mouseX - followerX) * 0.12;
             followerY += (mouseY - followerY) * 0.12;
 
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            follower.style.left = followerX + 'px';
-            follower.style.top = followerY + 'px';
+            if (cursor) { cursor.style.left = cursorX + 'px'; cursor.style.top = cursorY + 'px'; }
+            if (follower) { follower.style.left = followerX + 'px'; follower.style.top = followerY + 'px'; }
 
             requestAnimationFrame(animateCursor);
         }
@@ -574,17 +592,30 @@
             else navbar.classList.remove('scrolled');
         });
 
-        // Intersection observer for reveal animations
-        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, idx) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('visible'), idx * 80);
-                }
+        // Intersection observer for reveal animations (lower threshold + small rootMargin)
+        const observerOptions = { threshold: 0.05, rootMargin: '0px 0px -50px 0px' };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, observerOptions);
 
-        document.querySelectorAll('.work-item, .featured-item, .testimonial').forEach(el => observer.observe(el));
+        // Observe the target elements
+        document.querySelectorAll('.work-item, .featured-item, .testimonial').forEach(el => revealObserver.observe(el));
+
+        // Fallback: reveal visible items already in viewport on load/resize/orientationchange
+        function revealInViewFallback() {
+            document.querySelectorAll('.featured-item, .work-item, .testimonial').forEach(el => {
+                const r = el.getBoundingClientRect();
+                if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible');
+            });
+        }
+        window.addEventListener('load', () => {
+            // allow layout and images to settle
+            setTimeout(revealInViewFallback, 120);
+        });
+        window.addEventListener('orientationchange', () => setTimeout(revealInViewFallback, 120));
+        window.addEventListener('resize', () => setTimeout(revealInViewFallback, 120));
 
         // Smooth anchor scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -604,11 +635,21 @@
             });
         });
 
-        // Accessibility: enable keyboard focus outline on keyboard navigation
+        // Accessibility: keyboard focus outline on Tab
         function handleFirstTab(e) {
             if (e.key === 'Tab') document.body.classList.add('show-focus-outline');
         }
         window.addEventListener('keydown', handleFirstTab);
+
+        // Ensure featured images have layout attributes (help mobile browsers compute size)
+        (function setImageDPRAttributes(){
+            document.querySelectorAll('.featured-image img').forEach(img=>{
+                try{
+                    if (!img.getAttribute('width')) img.setAttribute('width','630');
+                    if (!img.getAttribute('height')) img.setAttribute('height','360');
+                }catch(e){}
+            });
+        })();
     </script>
 </body>
 </html>
